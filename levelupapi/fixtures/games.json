@@ -1,0 +1,43 @@
+[
+    {
+        "model": "levelupapi.game",
+        "pk": 1,
+        "fields": {
+            "title": "The Blockbuster Game",
+            "maker": "Big Potato Game",
+            "game_type": 1,
+            "gamer":1,
+            "skill_level":5,
+            "number_of_players":6
+
+
+
+        }
+    },
+    {
+        "model": "levelupapi.game",
+        "pk": 2,
+        "fields": {
+            "title": "Star Wars: The Old Republic",
+            "maker": "Bioware",
+            "game_type": 3,
+            "gamer":1,
+            "skill_level":1,
+            "number_of_players":6
+
+        }
+    },
+    {
+        "model": "levelupapi.game",
+        "pk": 3,
+        "fields": {
+            "title": "Elder Scrolls V: Skyrim",
+            "maker": "Bethesda",
+            "game_type": 2,
+            "gamer":1,
+            "skill_level":10,
+            "number_of_players":1
+
+        }
+    }
+]
