@@ -8,3 +8,11 @@ class Event(models.Model):
     time = models.TimeField()
     organizer = models.ForeignKey("gamer", on_delete=models.CASCADE)
     attendees = models.ManyToManyField("gamer", related_name="gamers")
+    
+    @property
+    def joined(self):
+        return self.__joined
+
+    @joined.setter
+    def joined(self, value):
+        self.__joined = value
