@@ -7,6 +7,7 @@ from levelupapi.models import Event, Game, Gamer
 from rest_framework.decorators import action
 
 
+
 class EventView(ViewSet):
     """Level up game types view"""
 
