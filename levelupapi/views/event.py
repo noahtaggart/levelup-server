@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import serializers, status
 from levelupapi.models import Event, Game, Gamer
 from rest_framework.decorators import action
-from django.db.models import Count
+from django.db.models import Count, Q
 
 
 
@@ -33,17 +33,24 @@ class EventView(ViewSet):
         Returns:
             Response -- JSON serialized list of game types
         """
-        events = Event.objects.annotate(attendees_count=Count('attendees'))
+        gamer = Gamer.objects.get(user=request.auth.user)
+        events = Event.objects.annotate( 
+            attendees_count=Count('attendees'),
+            joined=Count(
+                'attendees',
+                filter=Q(attendees=gamer)
+            )
+        )
         
         game = request.query_params.get('game', None)
         if game is not None:
             events = events.filter(game_id = game)
             
-        # Set the `joined` property on every event
-        for event in events:
-            # Check to see if the gamer is in the attendees list on the event
-            gamer = Gamer.objects.get(user=request.auth.user)
-            event.joined = gamer in event.attendees.all()
+        # # Set the `joined` property on every event
+        # for event in events:
+        #     # Check to see if the gamer is in the attendees list on the event
+        #     gamer = Gamer.objects.get(user=request.auth.user)
+        #     event.joined = gamer in event.attendees.all()
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     
