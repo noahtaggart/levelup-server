@@ -22,7 +22,7 @@ class GameView(ViewSet):
             filter=Q(event__organizer = gamer)))
             game = games.get(pk=pk)
             serializer = GameSerializer(game)
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Game.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND) 
 
@@ -62,7 +62,7 @@ class GameView(ViewSet):
             game_type=game_type
     )
         serializer = GameSerializer(game)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     def update(self, request, pk):
         """Handle PUT requests for a game
@@ -99,5 +99,5 @@ class GameSerializer(serializers.ModelSerializer):
     user_event_count = serializers.IntegerField(default=None)
     class Meta:
         model = Game
-        fields = ('id', 'title', 'maker', 'skill_level', 'number_of_players', 'game_type_id', 'gamer', "game_type", 'event_count', 'user_event_count' )
+        fields = ('id', 'title', 'maker', 'skill_level', 'number_of_players', 'game_type', 'gamer', "game_type", 'event_count', 'user_event_count' )
         depth = 1
