@@ -5,11 +5,29 @@ from rest_framework.response import Response
 from rest_framework import serializers, status
 from levelupapi.models import Game, Gamer, Game_type
 from django.db.models import Count, Q
+from rest_framework.permissions import DjangoModelPermissions
+from rest_framework import permissions
 
 
+class CurrentUserIsCreatorCheck(permissions.BasePermission):
+    """Allows owner of an object to edit it. """
+    
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        elif obj.gamer == request.auth.user:
+            return True
+        elif obj.gamer.id != request.auth.user.id:
+            return False
+        
+        # return obj.gamer.id == request.auth.user.id
+    
+    
+    
 class GameView(ViewSet):
     """Level up game view"""
-
+    permission_classes = [ CurrentUserIsCreatorCheck ]
+    queryset = Game.objects.none()
     def retrieve(self, request, pk):
         """Handle GET requests for single game type
 
@@ -70,15 +88,12 @@ class GameView(ViewSet):
         Returns:
         Response -- Empty body with 204 status code
         """
-
         game = Game.objects.get(pk=pk)
+        self.check_object_permissions(request, game)
         game.title = request.data["title"]
         game.maker = request.data["maker"]
         game.number_of_players = request.data["number_of_players"]
         game.skill_level = request.data["skill_level"]
-
-        gamer = Gamer.objects.get(user=request.auth.user)
-        game.gamer = gamer
         game_type = Game_type.objects.get(pk=request.data["game_type"])
         game.game_type = game_type
         game.save()

@@ -6,7 +6,7 @@
             "title": "The Blockbuster Game",
             "maker": "Big Potato Game",
             "game_type": 1,
-            "gamer":1,
+            "gamer":2,
             "skill_level":5,
             "number_of_players":6
 

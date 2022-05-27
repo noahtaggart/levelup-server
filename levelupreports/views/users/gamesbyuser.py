@@ -15,15 +15,10 @@ class UserGameList(View):
             # TODO: Write a query to get all games along with the gamer first name, last name, and id
             db_cursor.execute("""
             SELECT
-            u.id as user_id,
-            u.first_name || " " || u.last_name as full_name,
-            g.*
+            *
             
             
-            from auth_user u
-            join levelupAPI_gamer gr ON u.id = gr.user_id
-            join  levelupAPI_game g ON gr.id = g.gamer_id
-                            
+            from GAMES_BY_USER1      
             
             """)
             # Pass the db_cursor to the dict_fetch_all function to turn the fetch_all() response into a dictionary

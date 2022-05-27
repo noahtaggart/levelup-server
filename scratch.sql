@@ -21,3 +21,29 @@
                     ON u.id = gr.id
                 JOIN levelupapi_game g
                     ON g.id = e.game_id
+
+CREATE VIEW GAMES_BY_USER1 AS
+SELECT
+    g.*,
+    u.id user_id,
+    u.first_name || ' ' || u.last_name AS full_name
+FROM
+    levelupapi_game g
+JOIN
+    levelupapi_gamer gr ON g.gamer_id = gr.id
+JOIN
+    auth_user u ON gr.user_id = u.id
+;
+
+CREATE VIEW EVENTS_BY_USER AS
+SELECT
+    e.*,
+    g.title,
+    u.first_name || " " || u.last_name AS full_name
+    FROM levelupapi_event e
+    JOIN levelupapi_gamer gr
+        ON gr.id = e.organizer_id
+    JOIN auth_user u
+        ON u.id = gr.id
+    JOIN levelupapi_game g
+        ON g.id = e.game_id
